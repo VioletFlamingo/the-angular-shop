@@ -10,33 +10,34 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body ng-app="theShop">
-    <div id="header">
-        <div>
-            <div class="row">
-                <div class="col"></div>
-                <div class="col"><h1>SHOP</h1></div>
-                <div class="col"><h3>
-                    <a ui-sref="home"><span class="glyphicon glyphicon-home"/></a>
-                    <a ui-sref="basket"><span class="glyphicon glyphicon-shopping-cart"/></a>
-                </h3></div>
-            </div>
+<div id="header">
+    <div>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><h1>SHOP</h1></div>
+            <div class="col"><h3>
+                <a ui-sref="home"><span class="glyphicon glyphicon-home"/></a>
+                <a ui-sref="basket"><span class="glyphicon glyphicon-shopping-cart"/></a>
+            </h3></div>
         </div>
     </div>
+</div>
 
-    <div id="nav" ng-controller="MainCtrl">
-        <p ng-repeat="product in products.products"> {{product.name}} </p>
-    </div>
+<div id="nav" ng-controller="MainCtrl">
+    <input placeholder="Seach..." ng-model="query">
+    <p ng-repeat="product in products.products | filter:{name:query}"> {{product.name}} </p>
+</div>
 
-    <ui-view></ui-view>
+<ui-view></ui-view>
 
 <script type="text/ng-template" id="/home.html">
-    <div id="section" ng-controller="MainCtrl">
+    <div class="section" ng-controller="MainCtrl">
         <h1>Details</h1>
     </div>
 </script>
 
 <script type="text/ng-template" id="/basket.html">
-    <div id="section" ng-controller="BasketCtrl">
+    <div class="section" ng-controller="BasketCtrl">
         <h1>BASKET</h1>
     </div>
 </script>

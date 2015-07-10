@@ -44,6 +44,7 @@ app.factory('products', ['$http', function($http) {
 
 app.controller('MainCtrl', ['$scope', 'products', function($scope, products) {
     $scope.products = products;
+    $scope.query="";
 }]);
 
 app.controller('ProductsCtrl', ['$scope', 'products', 'product', function($scope) {

@@ -45,16 +45,16 @@ app.factory('products', ['$http', function($http) {
 app.controller('MainCtrl', ['$scope', 'products', function($scope, products) {
     $scope.products = products;
     $scope.query="";
+    $scope.cost = 0;
+    $scope.addProduct = function() {
+        $scope.cost = $scope.cost + 1;
+    }
 }]);
 
 app.controller('ProductsCtrl', ['$scope', 'products', 'product', function($scope) {
     $scope.post = post;
 }]);
 
-app.controller('BasketCtrl', ['$scope', function($scope) {
+app.controller('BasketCtrl', ['$scope', function($scope, cost) {
     $scope.basket = "BASKET";
-    $scope.cost = 0;
-    $scope.addProduct = function() {
-        $scope.cost = $scope.cost + 1;
-    }
 }]);

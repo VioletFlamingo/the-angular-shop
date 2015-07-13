@@ -9,7 +9,7 @@
 
     <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
-<body ng-app="theShop">
+<body ng-app="theShop" ng-controller="MainCtrl">
 <div id="header">
     <div>
         <div class="row">
@@ -41,6 +41,7 @@
 <script type="text/ng-template" id="/basket.html">
     <div class="section" ng-controller="BasketCtrl">
         <h1>BASKET</h1>
+        <h1>Total cost: {{ cost }}</h1>
     </div>
 </script>
 

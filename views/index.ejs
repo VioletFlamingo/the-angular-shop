@@ -24,7 +24,7 @@
 </div>
 
 <div id="nav" ng-controller="MainCtrl">
-    <input placeholder="Seach..." ng-model="query">
+    <input placeholder="Search..." ng-model="query">
     <p ng-repeat="product in products.products | filter:{name:query}"> {{product.name}} </p>
 </div>
 

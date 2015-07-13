@@ -10,40 +10,40 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body ng-app="theShop" ng-controller="MainCtrl">
-<div id="header">
-    <div>
-        <div class="row">
-            <div class="col"></div>
-            <div class="col"><h1>SHOP</h1></div>
-            <div class="col" ng-controller="BasketCtrl"><h3>
-                <a ui-sref="home"><span class="glyphicon glyphicon-home"/></a>
-                <a ui-sref="basket"><span class="glyphicon glyphicon-shopping-cart"/></a>
-                <button ng-click="addProduct()"><span class="glyphicon glyphicon-plus"/></button>
-                <span><h5>{{ cost | currency }}</h5></span>
-            </h3></div>
+    <div id="header">
+        <div>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col"><h1>SHOP</h1></div>
+                <div class="col"><h3>
+                    <a ui-sref="home"><span class="glyphicon glyphicon-home"/></a>
+                    <a ui-sref="basket"><span class="glyphicon glyphicon-shopping-cart"/></a>
+                    <button ng-click="addProduct()"><span class="glyphicon glyphicon-plus"/></button>
+                    <span><h5>{{ cost | currency }}</h5></span>
+                </h3></div>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="nav" ng-controller="MainCtrl">
-    <input placeholder="Search..." ng-model="query">
-    <p ng-repeat="product in products.products | filter:{name:query}"> {{product.name}} </p>
-</div>
-
-<ui-view></ui-view>
-
-<script type="text/ng-template" id="/home.html">
-    <div class="section" ng-controller="MainCtrl">
-        <h1>Details</h1>
+    <div id="nav" ng-controller="NavCtrl">
+        <input placeholder="Search..." ng-model="query">
+        <p ng-repeat="product in products.products | filter:{name:query}"> {{product.name}} </p>
     </div>
-</script>
 
-<script type="text/ng-template" id="/basket.html">
-    <div class="section" ng-controller="BasketCtrl">
-        <h1>BASKET</h1>
-        <h1>Total cost: {{ cost }}</h1>
-    </div>
-</script>
+    <ui-view></ui-view>
+
+    <script type="text/ng-template" id="/home.html">
+        <div class="section">
+            <h1>Details</h1>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="/basket.html">
+        <div class="section">
+            <h1>BASKET</h1>
+            <h3>Total cost: {{ cost | currency }}</h3>
+        </div>
+    </script>
 
 </body>
 

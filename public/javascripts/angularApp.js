@@ -14,10 +14,10 @@ app.config([
                     return products.getAll();
                 }]
             }
-        }).state('basket', {
-            url: '/basket',
-            templateUrl: '/basket.html',
-            controller: 'BasketCtrl',
+        }).state('cart', {
+            url: '/cart',
+            templateUrl: '/cart.html',
+            controller: 'CartCtrl',
             resolve: {
                 postPromise: ['products', function(products) {
                     return products.getAll();
@@ -54,7 +54,7 @@ app.controller('ProductsCtrl', ['$scope', 'products', 'product', function($scope
     $scope.post = post;
 }]);
 
-app.controller('BasketCtrl', ['$scope', function($scope) {
+app.controller('CartCtrl', ['$scope', function($scope) {
 
 }]);
 

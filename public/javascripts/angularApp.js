@@ -53,4 +53,8 @@ app.controller('ProductsCtrl', ['$scope', 'products', 'product', function($scope
 
 app.controller('BasketCtrl', ['$scope', function($scope) {
     $scope.basket = "BASKET";
+    $scope.cost = 0;
+    $scope.addProduct = function() {
+        $scope.cost = $scope.cost + 1;
+    }
 }]);

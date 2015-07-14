@@ -23,13 +23,23 @@ app.config([
                     return products.getAll();
                 }]
             }
+        }).state('products', {
+            url: 'products/:productID',
+            templateUrl: 'products.html',
+            controller: 'MainCtrl',
+//            resolve: {
+//                postPromise: ['products', function(products) {
+//                    return products.getAll();
+//                }]
+//            }
         });
-        $urlRouterProvider.otherwise('home');
+//        $urlRouterProvider.otherwise('home');
     }
 ]);
 
+
 app.factory('products', ['$http', function($http) {
-    var o = {
+   var o = {
         products:[]
     };
 
@@ -39,15 +49,47 @@ app.factory('products', ['$http', function($http) {
         });
     };
 
+    o.get = function(id) {
+        return $http.get('/products/' + id).success(function(res) {
+            console.log(res[0]);
+            return res[0];
+        });
+    };
+
     return o;
 }]);
 
-app.controller('MainCtrl', ['$scope', 'products', function($scope, products) {
+app.controller('MainCtrl', ['$scope', '$stateParams', '$http', 'products',
+function($scope, $stateParams, $http, products) {
     $scope.products = products;
+
     $scope.cost = 0;
     $scope.addProduct = function() {
         $scope.cost = $scope.cost + 1;
     }
+    $scope.id = $stateParams.productID;
+//    $scope.product = products.get($stateParams.productID);
+//    $scope.click = function() {
+//        console.log("PROD: ");
+//        console.log($scope.product);
+//    }
+
+    console.log("id: "+$stateParams.productID);
+
+       if($stateParams.productID){
+           var id = $stateParams.productID;
+           $http.get('/products/' + id).success(function(data){
+               console.log('Konkretny produkt : \n' + JSON.stringify(data));
+               $scope.product = data[0];
+               console.log("Product: "+$scope.product);
+               console.log("Name: "+$scope.product.name);
+               $scope.click = function() {
+                    console.log("PROD: ");
+                    console.log($scope.product);
+               };
+           });
+       }
+
 }]);
 
 app.controller('ProductsCtrl', ['$scope', 'products', 'product', function($scope) {

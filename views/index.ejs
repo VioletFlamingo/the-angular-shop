@@ -27,7 +27,11 @@
 
     <div id="nav" ng-controller="NavCtrl">
         <input placeholder="Search..." ng-model="query">
-        <p ng-repeat="product in products.products | filter:{name:query}"> {{product.name}} </p>
+        <p ng-repeat="product in products.products | filter:{name:query}">
+            <a ui-sref="products({productID: product._id})">
+                {{product.name}}
+            </a>
+        </p>
     </div>
 
     <ui-view></ui-view>
@@ -42,6 +46,14 @@
         <div class="section">
             <h1>CART</h1>
             <h3>Total cost: {{ cost | currency }}</h3>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="products.html">
+        <div class="section">
+            <h1>PROD</h1>
+            <h3>{{ id }}</h3>
+            <h3>{{ product.name }}</h3>
         </div>
     </script>
 

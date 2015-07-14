@@ -19,3 +19,10 @@ router.get('/products', function(req, res, next) {
     });
 
 });
+
+router.get('/products/:product', function(req, res) {
+    var id = req.params.product;
+    coll.find({_id: parseInt(id)}, function(err, data) {
+        res.json(data);
+    });
+});

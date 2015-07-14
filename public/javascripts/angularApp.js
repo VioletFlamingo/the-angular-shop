@@ -26,12 +26,12 @@ app.config([
         }).state('products', {
             url: 'products/:productID',
             templateUrl: 'products.html',
-            controller: 'MainCtrl',
-//            resolve: {
-//                postPromise: ['products', function(products) {
-//                    return products.getAll();
-//                }]
-//            }
+            controller: 'ProductsCtrl',
+            resolve: {
+                postPromise: ['products', function(products) {
+                    return products.getAll();
+                }]
+            }
         });
 //        $urlRouterProvider.otherwise('home');
     }
@@ -52,14 +52,18 @@ app.factory('products', ['$http', function($http) {
     return o;
 }]);
 
-app.controller('MainCtrl', ['$scope', '$stateParams', '$http', 'products',
-function($scope, $stateParams, $http, products) {
+app.controller('MainCtrl', ['$scope', 'products',
+function($scope, products) {
     $scope.products = products;
 
     $scope.cost = 0;
     $scope.addProduct = function() {
         $scope.cost = $scope.cost + 1;
     }
+}]);
+
+app.controller('ProductsCtrl', ['$scope', '$stateParams', '$http', 'products',
+function($scope, $stateParams, $http, products) {
     $scope.id = $stateParams.productID;
 
     if($stateParams.productID){
@@ -68,11 +72,6 @@ function($scope, $stateParams, $http, products) {
            $scope.product = data[0];
        });
     }
-
-}]);
-
-app.controller('ProductsCtrl', ['$scope', 'products', 'product', function($scope) {
-    $scope.post = post;
 }]);
 
 app.controller('CartCtrl', ['$scope', function($scope) {

@@ -52,6 +52,30 @@ app.factory('products', ['$http', function($http) {
     return o;
 }]);
 
+app.factory('basketManager', function() {
+    var productsList = [];
+    var bill = 0;
+
+    var addProduct = function(newProduct) {
+        productsList.push(newProduct);
+        bill = bill + newProduct.price;
+    };
+
+    var getAll = function() {
+        return productsList;
+    };
+
+    var getBill = function() {
+        return bill;
+    };
+
+    return {
+        addProduct: addProduct,
+        getAll: getAll,
+        getBill: getBill
+    }
+});
+
 app.controller('MainCtrl', ['$scope', 'products',
 function($scope, products) {
     $scope.products = products;
@@ -62,20 +86,25 @@ function($scope, products) {
     }
 }]);
 
-app.controller('ProductsCtrl', ['$scope', '$stateParams', '$http', 'products',
-function($scope, $stateParams, $http, products) {
+app.controller('ProductsCtrl', ['$scope', '$stateParams', '$http', 'products', 'basketManager',
+function($scope, $stateParams, $http, products, basketManager) {
     $scope.id = $stateParams.productID;
 
     if($stateParams.productID){
        var id = $stateParams.productID;
        $http.get('/products/' + id).success(function(data){
            $scope.product = data[0];
+           $scope.addToCart = function() {
+                basketManager.addProduct($scope.product);
+           };
        });
     }
+
 }]);
 
-app.controller('CartCtrl', ['$scope', function($scope) {
-
+app.controller('CartCtrl', ['$scope', 'basketManager', function($scope, basketManager) {
+    $scope.choices = basketManager.getAll();
+    $scope.cost = basketManager.getBill();
 }]);
 
 app.controller('NavCtrl', ['$scope', function($scope) {

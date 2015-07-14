@@ -42,9 +42,12 @@
     </script>
 
     <script type="text/ng-template" id="/cart.html">
-        <div class="section">
+        <div class="section" ng-controller="CartCtrl">
             <h1>CART</h1>
             <h3>Total cost: {{ cost | currency }}</h3>
+            <p ng-repeat="item in choices">
+                {{ item.name }}
+            </p>
         </div>
     </script>
 
@@ -54,7 +57,7 @@
                 <div class="col"><h3>{{ product.name }}</h3></div>
                 <div class="col">
                     <h3>Price: {{ product.price | currency }}</h3>
-                    <button ng-click="addProduct()"><span class="glyphicon glyphicon-plus"/></button>
+                    <button ng-click="addToCart()"><span class="glyphicon glyphicon-plus"/></button>
                 </div>
             </div>
             <p>{{ product.description }}</p>

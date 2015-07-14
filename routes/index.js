@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/products', function(req, res, next) {
     coll.find(function(err, data) {
-        if(err){return next(err);}
+        if(err){ return next(err); }
 
         res.json(data);
     });

@@ -49,13 +49,6 @@ app.factory('products', ['$http', function($http) {
         });
     };
 
-    o.get = function(id) {
-        return $http.get('/products/' + id).success(function(res) {
-            console.log(res[0]);
-            return res[0];
-        });
-    };
-
     return o;
 }]);
 
@@ -68,27 +61,13 @@ function($scope, $stateParams, $http, products) {
         $scope.cost = $scope.cost + 1;
     }
     $scope.id = $stateParams.productID;
-//    $scope.product = products.get($stateParams.productID);
-//    $scope.click = function() {
-//        console.log("PROD: ");
-//        console.log($scope.product);
-//    }
 
-    console.log("id: "+$stateParams.productID);
-
-       if($stateParams.productID){
-           var id = $stateParams.productID;
-           $http.get('/products/' + id).success(function(data){
-               console.log('Konkretny produkt : \n' + JSON.stringify(data));
-               $scope.product = data[0];
-               console.log("Product: "+$scope.product);
-               console.log("Name: "+$scope.product.name);
-               $scope.click = function() {
-                    console.log("PROD: ");
-                    console.log($scope.product);
-               };
-           });
-       }
+    if($stateParams.productID){
+       var id = $stateParams.productID;
+       $http.get('/products/' + id).success(function(data){
+           $scope.product = data[0];
+       });
+    }
 
 }]);
 

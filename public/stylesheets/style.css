@@ -21,10 +21,11 @@ a {
     padding:5px;
 }
 .section {
-    width:350px;
+    width:600px;
     float:left;
     padding:10px;
 }
+
 #footer {
     background-color:black;
     color:white;
@@ -39,6 +40,7 @@ a {
 
 .col {
     flex: 1; /* additionally, equal width */
+    padding: 10px;
 }
 
 .glyphicon:hover {

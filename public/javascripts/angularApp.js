@@ -57,7 +57,25 @@ app.factory('basketManager', function() {
     var bill = 0;
 
     var addProduct = function(newProduct) {
-        productsList.push(newProduct);
+        var index = -1;
+
+        for (var i = 0; i<productsList.length; i++) {
+            console.log(productsList[i][0]);
+            console.log(newProduct);
+            if (productsList[i][0].name === newProduct.name) {
+                index = i;
+                break;
+            }
+        }
+        console.log("index: "+index);
+
+        //
+
+        if(index > -1) {
+            productsList[index][1] = productsList[index][1] + 1;
+        } else {
+            productsList.push([newProduct, 1]);
+        }
         bill = bill + newProduct.price;
     };
 
@@ -79,11 +97,6 @@ app.factory('basketManager', function() {
 app.controller('MainCtrl', ['$scope', 'products',
 function($scope, products) {
     $scope.products = products;
-
-    $scope.cost = 0;
-    $scope.addProduct = function() {
-        $scope.cost = $scope.cost + 1;
-    }
 }]);
 
 app.controller('ProductsCtrl', ['$scope', '$stateParams', '$http', 'products', 'basketManager',

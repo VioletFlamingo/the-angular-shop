@@ -18,7 +18,7 @@
                 <div class="col"><h3>
                     <a ui-sref="home"><span class="glyphicon glyphicon-home"/></a>
                     <a ui-sref="cart"><span class="glyphicon glyphicon-shopping-cart"/></a>
-                    <span><h5>{{ cost | currency }}</h5></span>
+                    <span ng-controller="CartCtrl"><h5>{{ cost | currency }}</h5></span>
                 </h3></div>
             </div>
         </div>
@@ -45,9 +45,16 @@
         <div class="section" ng-controller="CartCtrl">
             <h1>CART</h1>
             <h3>Total cost: {{ cost | currency }}</h3>
-            <p ng-repeat="item in choices">
-                {{ item.name }}
-            </p>
+            <table>
+                <tr>
+                    <td>Product name</td>
+                    <td>Quantity</td>
+                </tr>
+                <tr ng-repeat="item in choices">
+                    <td>{{item[0].name}}</td>
+                    <td>{{item[1]}}</td>
+                </tr>
+            </table>
         </div>
     </script>
 

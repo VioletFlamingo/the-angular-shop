@@ -46,3 +46,7 @@ a {
 .glyphicon:hover {
     color: #99CCFF;
 }
+
+table, th, td {
+    border: 1px solid black;
+}

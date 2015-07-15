@@ -52,7 +52,21 @@ app.factory('products', ['$http', function($http) {
     return o;
 }]);
 
-app.factory('basketManager', function() {
+app.factory('cartManager', function() {
+    // observer
+    var observerCallbacks = [];
+
+    var registerObserverCallback = function(callback){
+        observerCallbacks.push(callback);
+    };
+
+    var notifyObservers = function(){
+    angular.forEach(observerCallbacks, function(callback){
+            callback();
+        });
+    };
+    // end of observer
+
     var productsList = [];
     var bill = 0;
 
@@ -74,6 +88,7 @@ app.factory('basketManager', function() {
             productsList.push([newProduct, 1]);
         }
         bill = bill + newProduct.price;
+        notifyObservers();
     };
 
     var getAll = function() {
@@ -81,10 +96,6 @@ app.factory('basketManager', function() {
     };
 
     var getBill = function() {
-        return bill;
-    };
-
-    var getBill2 = function() {
         return bill;
     };
 
@@ -99,6 +110,7 @@ app.factory('basketManager', function() {
         }
         bill = bill + item.price;
         productsList[i][1] = productsList[i][1] + 1;
+        notifyObservers();
         return bill;
     };
 
@@ -118,6 +130,7 @@ app.factory('basketManager', function() {
         } else {
             productsList.splice(i, 1);
         }
+        notifyObservers();
         return bill;
     };
 
@@ -132,6 +145,7 @@ app.factory('basketManager', function() {
         bill = bill - productsList[i][1]*item.price;
 
         productsList.splice(i, 1);
+        notifyObservers();
         return bill;
     };
 
@@ -141,7 +155,8 @@ app.factory('basketManager', function() {
         getBill: getBill,
         plusProduct: plusProduct,
         minusProduct: minusProduct,
-        removeAllOfType: removeAllOfType
+        removeAllOfType: removeAllOfType,
+        registerObserverCallback: registerObserverCallback
     }
 });
 
@@ -150,8 +165,8 @@ function($scope, products) {
     $scope.products = products;
 }]);
 
-app.controller('ProductsCtrl', ['$scope', '$stateParams', '$http', 'products', 'basketManager',
-function($scope, $stateParams, $http, products, basketManager) {
+app.controller('ProductsCtrl', ['$scope', '$stateParams', '$http', 'products', 'cartManager',
+function($scope, $stateParams, $http, products, cartManager) {
     $scope.id = $stateParams.productID;
 
     if($stateParams.productID){
@@ -159,26 +174,33 @@ function($scope, $stateParams, $http, products, basketManager) {
        $http.get('/products/' + id).success(function(data){
            $scope.product = data[0];
            $scope.addToCart = function() {
-                basketManager.addProduct($scope.product);
+                cartManager.addProduct($scope.product);
            };
        });
     }
 
 }]);
 
-app.controller('CartCtrl', ['$scope', 'basketManager', function($scope, basketManager) {
-    $scope.choices = basketManager.getAll();
-    $scope.cost = basketManager.getBill();
+app.controller('CartCtrl', ['$scope', 'cartManager', function($scope, cartManager) {
+    $scope.choices = cartManager.getAll();
+    $scope.cost = cartManager.getBill();
 
     $scope.addItem = function(item) {
-        $scope.cost = basketManager.plusProduct(item[0]);
+        cartManager.plusProduct(item[0]);
     };
     $scope.removeItem = function(item) {
-        $scope.cost = basketManager.minusProduct(item[0]);
+       cartManager.minusProduct(item[0]);
     };
     $scope.removeAllItems = function(item) {
-        $scope.cost = basketManager.removeAllOfType(item[0]);
+        cartManager.removeAllOfType(item[0]);
     };
+
+    var update = function(){
+        $scope.choices = cartManager.getAll();
+        $scope.cost = cartManager.getBill();
+    };
+
+    cartManager.registerObserverCallback(update);
 }]);
 
 app.controller('NavCtrl', ['$scope', function($scope) {

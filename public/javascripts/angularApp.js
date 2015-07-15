@@ -97,7 +97,9 @@ app.factory('basketManager', function() {
                 break;
             }
         }
+        bill = bill + item.price;
         productsList[i][1] = productsList[i][1] + 1;
+        return bill;
     };
 
     var minusProduct = function(item) {
@@ -109,11 +111,14 @@ app.factory('basketManager', function() {
             }
         }
 
+        bill = bill - item.price;
+
         if (productsList[i][1]>1) {
             productsList[i][1] = productsList[i][1] - 1;
         } else {
             productsList.splice(i, 1);
         }
+        return bill;
     };
 
     var removeAllOfType = function(item) {
@@ -124,7 +129,10 @@ app.factory('basketManager', function() {
                 break;
             }
         }
+        bill = bill - productsList[i][1]*item.price;
+
         productsList.splice(i, 1);
+        return bill;
     };
 
     return {
@@ -163,13 +171,13 @@ app.controller('CartCtrl', ['$scope', 'basketManager', function($scope, basketMa
     $scope.cost = basketManager.getBill();
 
     $scope.addItem = function(item) {
-        basketManager.plusProduct(item[0]);
+        $scope.cost = basketManager.plusProduct(item[0]);
     };
     $scope.removeItem = function(item) {
-        basketManager.minusProduct(item[0]);
+        $scope.cost = basketManager.minusProduct(item[0]);
     };
     $scope.removeAllItems = function(item) {
-        basketManager.removeAllOfType(item[0]);
+        $scope.cost = basketManager.removeAllOfType(item[0]);
     };
 }]);
 

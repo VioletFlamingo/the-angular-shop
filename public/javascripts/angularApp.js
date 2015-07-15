@@ -67,9 +67,6 @@ app.factory('basketManager', function() {
                 break;
             }
         }
-        console.log("index: "+index);
-
-        //
 
         if(index > -1) {
             productsList[index][1] = productsList[index][1] + 1;
@@ -87,10 +84,56 @@ app.factory('basketManager', function() {
         return bill;
     };
 
+    var getBill2 = function() {
+        return bill;
+    };
+
+    var plusProduct = function(item) {
+        var index = -1;
+
+        for (var i = 0; i<productsList.length; i++) {
+            if (productsList[i][0].name === item.name) {
+                index = i;
+                break;
+            }
+        }
+        productsList[i][1] = productsList[i][1] + 1;
+    };
+
+    var minusProduct = function(item) {
+        var index = -1;
+        for (var i = 0; i<productsList.length; i++) {
+            if (productsList[i][0].name === item.name) {
+                index = i;
+                break;
+            }
+        }
+
+        if (productsList[i][1]>1) {
+            productsList[i][1] = productsList[i][1] - 1;
+        } else {
+            productsList.splice(i, 1);
+        }
+    };
+
+    var removeAllOfType = function(item) {
+        var index = -1;
+        for (var i = 0; i<productsList.length; i++) {
+            if (productsList[i][0].name === item.name) {
+                index = i;
+                break;
+            }
+        }
+        productsList.splice(i, 1);
+    };
+
     return {
         addProduct: addProduct,
         getAll: getAll,
-        getBill: getBill
+        getBill: getBill,
+        plusProduct: plusProduct,
+        minusProduct: minusProduct,
+        removeAllOfType: removeAllOfType
     }
 });
 
@@ -118,6 +161,16 @@ function($scope, $stateParams, $http, products, basketManager) {
 app.controller('CartCtrl', ['$scope', 'basketManager', function($scope, basketManager) {
     $scope.choices = basketManager.getAll();
     $scope.cost = basketManager.getBill();
+
+    $scope.addItem = function(item) {
+        basketManager.plusProduct(item[0]);
+    };
+    $scope.removeItem = function(item) {
+        basketManager.minusProduct(item[0]);
+    };
+    $scope.removeAllItems = function(item) {
+        basketManager.removeAllOfType(item[0]);
+    };
 }]);
 
 app.controller('NavCtrl', ['$scope', function($scope) {

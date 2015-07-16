@@ -8,6 +8,12 @@
     <script src="/javascripts/angularApp.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body ng-app="theShop" ng-controller="MainCtrl">
     <div id="header">
@@ -26,11 +32,49 @@
 
     <div id="nav" ng-controller="NavCtrl">
         <input placeholder="Search..." ng-model="query">
-        <p ng-repeat="product in products.products | filter:{name:query}">
-            <a ui-sref="products({productID: product._id})">
-                {{product.name}}
-            </a>
-        </p>
+        <div>
+            <button type="button" class="tags-btn" data-toggle="modal" data-target="#myModal">Tags</button>
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <center>
+                                <h4 class="modal-title">Search by tags</h4>
+                            </center>
+                        </div>
+                        <div class="modal-body">
+                            <div class="tags-box">
+                                    <ul>
+                                        <li ng-repeat="tag in selectedTags">{{ tag }}</li>
+                                    </ul>
+                            </div>
+                            <ng-form name="tagChoices">
+                                <ul>
+                                    <li ng-repeat="tag in tags">
+                                        <div>
+                                            <input type="checkbox" ng-model="confirmed" ng-change="change(tag)" >{{ tag }}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </ng-form>
+                        </div>
+                        <div class="modal-footer">
+                            <center>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tags-list">
+            <p ng-repeat="product in products.products | filter:{name:query} | filter:criteriaMatch()">
+                <a ui-sref="products({productID: product._id})">
+                    {{product.name}}
+                </a>
+            </p>
+        </div>
     </div>
 
     <ui-view></ui-view>

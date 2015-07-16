@@ -41,16 +41,57 @@ app.config([
 app.factory('products', ['$http', function($http) {
    var o = {
         products:[]
-    };
+   };
 
-    o.getAll = function() {
+   o.getAll = function() {
         return $http.get('/products').success(function (data) {
             angular.copy(data, o.products);
         });
-    };
+   };
+
 
     return o;
 }]);
+
+app.factory('tagsManager', function() {
+    // observer
+    var observerCallbacks = [];
+
+    var registerObserverCallback = function(callback){
+        observerCallbacks.push(callback);
+    };
+
+    var notifyObservers = function(){
+    angular.forEach(observerCallbacks, function(callback){
+            callback();
+        });
+    };
+    // end of observer
+
+    var tagList = [];
+
+    var getAll = function() {
+        return tagList;
+    };
+
+    var changeState = function(tag) {
+        var index = tagList.indexOf(tag);
+
+        if (index > -1) {
+            tagList.splice(index, 1);
+        } else {
+            tagList.push(tag);
+        }
+
+        notifyObservers();
+    };
+
+    return {
+        registerObserverCallback: registerObserverCallback,
+        getAll: getAll,
+        changeState: changeState
+    }
+});
 
 app.factory('cartManager', function() {
     // observer
@@ -160,9 +201,33 @@ app.factory('cartManager', function() {
     }
 });
 
-app.controller('MainCtrl', ['$scope', 'products',
-function($scope, products) {
+app.controller('MainCtrl', ['$scope', 'products', 'tagsManager',
+function($scope, products, tagsManager) {
     $scope.products = products;
+    $scope.selectedTags = [];
+
+    $scope.change = function(name) {
+        console.log(name);
+        tagsManager.changeState(name);
+    };
+
+    var update = function() {
+        $scope.selectedTags = tagsManager.getAll();
+    };
+
+    $scope.criteriaMatch = function() {
+        return function(item) {
+            for (index in $scope.selectedTags) {
+                var tag = $scope.selectedTags[index];
+                if (item.tags.indexOf(tag)<0) {
+                    return false;
+                }
+            }
+            return true;
+        };
+    };
+
+    tagsManager.registerObserverCallback(update);
 }]);
 
 app.controller('ProductsCtrl', ['$scope', '$stateParams', '$http', 'products', 'cartManager',
@@ -203,6 +268,9 @@ app.controller('CartCtrl', ['$scope', 'cartManager', function($scope, cartManage
     cartManager.registerObserverCallback(update);
 }]);
 
-app.controller('NavCtrl', ['$scope', function($scope) {
-    $scope.query="";
+app.controller('NavCtrl', ['$scope', '$http', 'products', function($scope, $http, products) {
+    $scope.query = "";
+    $http.get('/tags').success(function (data) {
+        $scope.tags = data;
+    });
 }]);

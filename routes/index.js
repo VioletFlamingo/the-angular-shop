@@ -26,3 +26,19 @@ router.get('/products/:product', function(req, res) {
         res.json(data);
     });
 });
+
+router.get('/tags', function(req, res) {
+    coll.aggregate(
+    {'$unwind':'$tags'},
+        {'$project':{
+            '_id':0,
+            'tagi':'$tags'
+            }},
+            {'$group':{
+                '_id':'',
+                'tags':{'$addToSet':'$tagi'}
+                }}
+    , function(err, data) {
+        res.json(data[0].tags);
+    });
+});

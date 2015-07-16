@@ -15,6 +15,7 @@ a {
     padding:5px;
 }
 #nav {
+    width: 190px;
     line-height:30px;
     background-color:#eeeeee;
     float:left;
@@ -46,3 +47,35 @@ a {
 .glyphicon:hover {
     color: #99CCFF;
 }
+
+.tags-box {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+    color: #fff;
+    border-radius: 6px;
+}
+
+.tags-btn {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+    color: #fff;
+    border-radius: 6px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.tags-list {
+    height : 600px;
+    overflow : auto;
+}
+
+ul {
+    list-style-type: none;
+    -moz-column-count: 4;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 4;
+    -webkit-column-gap: 20px;
+    column-count: 4;
+    column-gap: 20px;
+}
+

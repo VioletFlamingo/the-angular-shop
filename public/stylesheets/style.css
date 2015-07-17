@@ -32,3 +32,21 @@ footer {
     margin: 50px 0;
 }
 
+.scroll-list {
+    height: 510px;
+    overflow-y: auto;
+}
+
+.search-tags {
+    margin: 10px;
+}
+
+ul.without-dots {
+    list-style-type: none;
+    -moz-column-count: 4;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 4;
+    -webkit-column-gap: 20px;
+    column-count: 4;
+    column-gap: 20px;
+}

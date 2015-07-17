@@ -20,8 +20,6 @@ app.factory('cartManager', function() {
         var index = -1;
 
         for (var i = 0; i<productsList.length; i++) {
-            console.log(productsList[i][0]);
-            console.log(newProduct);
             if (productsList[i][0].name === newProduct.name) {
                 index = i;
                 break;

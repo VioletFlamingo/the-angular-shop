@@ -10,12 +10,6 @@
 
     <title>Shop Item - Start Bootstrap Template</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="css/shop-item.css" rel="stylesheet">
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -68,11 +62,13 @@
                     <a ui-sref="cart"><span class="glyphicon glyphicon-shopping-cart"/></a>
                 </li>
             </ul>
-            <a class="navbar-brand" ui-sref="home" ng-controller="CartCtrl">{{ cost | currency }}</a>
-            <a class="navbar-brand pull-right" ui-sref="home" ng-controller="CartCtrl">Nicolas Cage</a>
+            <a class="navbar-brand" ng-controller="CartCtrl">{{ cost | currency }}</a>
+            <a class="navbar-brand pull-right">Nicolas Cage</a>
             <ul class="nav navbar-nav pull-right">
                 <li>
-                    <a ui-sref="home"><span class="glyphicon glyphicon-user"/></a>
+                    <a class="nav navbar-nav pull-right" data-toggle="modal" data-target="#userModal">
+                        <span class="glyphicon glyphicon-user"/>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -80,6 +76,40 @@
     </div>
     <!-- /.container -->
 </nav>
+
+<div>
+    <div class="modal fade" id="userModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <center>
+                        <h4 class="modal-title">User info</h4>
+                    </center>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="thumbnail">
+                                <img class="img-responsive" src="http://nicolascageplotgenerator.weebly.com/uploads/2/5/5/6/25564387/262259_orig.gif" alt="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Name: Nicolas Cage</p>
+                            <p>Email: nick.cage@gmail.com</p>
+                            <p>Delivery address: Hollywood</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <center>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Page Content -->
 <div class="container">
@@ -101,7 +131,7 @@
                             </div>
                             <div class="modal-body">
                                 <ng-form name="tagChoices">
-                                    <ul>
+                                    <ul class="without-dots">
                                         <li ng-repeat="tag in tags">
                                             <div>
                                                 <input type="checkbox" ng-model="confirmed" ng-change="change(tag)" >{{ tag }}
@@ -119,7 +149,16 @@
                     </div>
                 </div>
             </div>
-            <div class="list-group">
+            <div class="bootstrap-tagsinput">
+                <ul class="dashed-list">
+                    <li ng-repeat="tag in selectedTags">
+                        <span class="tag label label-info search-tags">
+                            <span data-role="remove">{{ tag }}</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="list-group scroll-list">
                 <a ui-sref="products({productID: product._id})"
                    class="list-group-item" ng-repeat="product in products.products | filter:{name:query} | filter:criteriaMatch()">
                     {{product.name}}
@@ -171,7 +210,8 @@
                                 </tr>
                             </table>
                             <div>
-                                <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#buyModal">Buy</button>
+                                <button type="button" class="btn btn-default navbar-btn" data-toggle="modal"
+                                        data-target="#buyModal" ng-hide="emptyCart">Buy</button>
                                 <div class="modal fade" id="buyModal" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

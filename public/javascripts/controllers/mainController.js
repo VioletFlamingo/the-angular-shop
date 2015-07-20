@@ -1,5 +1,6 @@
 app.controller('MainCtrl', ['$scope', 'products', 'tagsManager',
 function($scope, products, tagsManager) {
+    products.getAll();
     $scope.products = products;
     $scope.selectedTags = [];
 
